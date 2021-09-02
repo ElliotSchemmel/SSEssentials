@@ -15,8 +15,21 @@ public class Assignment3 {
 	 * Create a Rectangle, Circle, and Triangle class to implement that interface
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
+		Rectangle r = new Rectangle();
+		
+		r.calculateArea(8.38, 29.2);
+		r.display();
 
+		Circle c = new Circle();
+		
+		c.calculateArea(13.7);
+		c.display();
+
+		Triangle t = new Triangle();
+		
+		t.calculateArea(5.98, 9.3);
+		t.display();
 	}
 
 }

@@ -7,14 +7,14 @@ package com.ss.jb2.three;
  * @author Elliot
  *
  */
-public class Rectangle implements Shape{
-	
+public class Triangle implements Shape {
+
 	private Double area;
 
 	@Override
 	public Double calculateArea(Double x, Double y) {
 		
-		area = x * y;
+		area = (x * y) / 2;
 		return area;
 
 	}
@@ -22,7 +22,7 @@ public class Rectangle implements Shape{
 	@Override
 	public void display() {
 		
-		System.out.println("The area of the rectangle is " + area);
+		System.out.println("The area of the triangle is " + area);
 
 	}
 
@@ -31,7 +31,4 @@ public class Rectangle implements Shape{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-
 }

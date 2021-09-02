@@ -9,8 +9,8 @@ package com.ss.jb2.three;
  */
 public interface Shape {
 	
-	public Float calculateArea(Float h, Float w);
-	public Float calculateArea(Float r);
+	public Double calculateArea(Double x, Double y);
+	public Double calculateArea(Double r);
 	
 	public void display();
 

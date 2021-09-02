@@ -1,7 +1,17 @@
+/**
+ * 
+ */
 package com.ss.jb1.one;
 
-public class Assignment1 {
+/**
+ * @author Elliot
+ *
+ */
+public class AssignmentOne {
 
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 	
 		StringBuilder dots = new StringBuilder("........");
@@ -61,4 +71,5 @@ public class Assignment1 {
 		}
 	
 	}
+
 }

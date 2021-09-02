@@ -10,7 +10,7 @@ import java.util.Random;
  * @author Elliot
  *
  */
-public class Assignment2 {
+public class AssignmentTwo {
 
 	/**
 	 * Create a program that asks a user to guess a number

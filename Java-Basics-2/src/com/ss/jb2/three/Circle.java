@@ -10,16 +10,16 @@ package com.ss.jb2.three;
 public class Circle implements Shape {
 	
 	private Double area;
+	private Double r;
 
-	@Override
-	public Double calculateArea(Double x, Double y) {
-		return null;
+	public Circle(Double r) {
+		super();
+		this.r = r;
 	}
-
+	
 	@Override
-	public Double calculateArea(Double r) {
-		area = r * r * Math.PI;
-		return area;
+	public void calculateArea() {
+		area =  r * r * Math.PI;
 	}
 
 	@Override

@@ -16,19 +16,19 @@ public class Assignment3 {
 	 */
 	public static void main(String[] args) {
 		
-		Rectangle r = new Rectangle();
+		Rectangle r = new Rectangle(8.38, 29.2);
 		
-		r.calculateArea(8.38, 29.2);
+		r.calculateArea();
 		r.display();
 
-		Circle c = new Circle();
+		Circle c = new Circle(13.7);
 		
-		c.calculateArea(13.7);
+		c.calculateArea();
 		c.display();
 
-		Triangle t = new Triangle();
+		Triangle t = new Triangle(5.98, 9.3);
 		
-		t.calculateArea(5.98, 9.3);
+		t.calculateArea();
 		t.display();
 	}
 

@@ -19,6 +19,7 @@ public class Assignment2 {
 		Object lock1 = new Object();
 		Object lock2 = new Object();
 
+		// t1 will stall on lock1
 		Runnable t1 = new Runnable() {
 
 			@Override
@@ -36,6 +37,7 @@ public class Assignment2 {
 			}
 		};
 
+		// t2 will stall on lock2
 		Runnable t2 = new Runnable() {
 
 			@Override

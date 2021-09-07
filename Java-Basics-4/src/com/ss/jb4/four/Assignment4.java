@@ -11,6 +11,7 @@ public class Assignment4 {
 
 	/**
 	 * @param args
+	 * Demonstrate the Line class
 	 */
 	public static void main(String[] args) {
 		

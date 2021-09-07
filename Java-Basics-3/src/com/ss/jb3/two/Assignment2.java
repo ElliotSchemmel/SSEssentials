@@ -17,10 +17,12 @@ public class Assignment2 {
 	/**
 	 * @param args
 	 * This program appends text to an existing file
+	 * file used is text.txt
 	 */
 	public static void main(String[] args) {
 		
 		String appendedString = "New appended text.";
+
 		try {
 			Files.write(
 					Paths.get("text.txt"),

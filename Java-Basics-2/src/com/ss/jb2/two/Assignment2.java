@@ -16,7 +16,10 @@ public class Assignment2 {
 	 */
 	public static void main(String[] args) {
 		
+		// keeps track of max number
 		int max = 0;
+		
+		// keeps track of position of max number
 		int maxI = 0;
 		int maxJ = 0;
 		
@@ -26,6 +29,7 @@ public class Assignment2 {
 					   {9, 483, 4, 99, 35, 5},
 					   {3, 4, 35, 3, 34, 5}};
 		
+		// loop through arr and find max number
 		for (int i = 0; i < arr.length; i++) {
 			for (int j = 0; j < arr[i].length; j++) {
 				if (arr[i][j] > max) {

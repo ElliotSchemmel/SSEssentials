@@ -16,6 +16,8 @@ public class Assignment3 {
 	 */
 	public static void main(String[] args) {
 		
+		// calculate the area and display the area of a rectangle, circle, and triangle
+		
 		Rectangle r = new Rectangle(8.38, 29.2);
 		
 		r.calculateArea();

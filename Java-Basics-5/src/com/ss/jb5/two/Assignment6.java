@@ -15,7 +15,12 @@ public class Assignment6 {
 	 */
 	public static void main(String[] args) {
 		
-		SampleSingleton.getInstance();
+		SampleSingleton first = SampleSingleton.getInstance();
+		SampleSingleton second = SampleSingleton.getInstance();
+
+		// show that both singletons are actually the same object
+		System.out.println(first);
+		System.out.println(second);
 
 	}
 

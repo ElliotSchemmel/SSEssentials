@@ -6,7 +6,7 @@ package com.ss.jb5.two;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 /**
  * @author Elliot
@@ -25,16 +25,16 @@ public class Assignment2 {
 		List<Integer> list = new ArrayList<>(Arrays.asList(23, 2345, 984, 29, 94, 4, 999, 39));
 		
 		// get the right most digits and store in Stream rightDigits
-		Stream<Integer> rightDigits = getRightDigit(list);
+		List<Integer> rightDigits = getRightDigit(list);
 		
 		// print out all rightmost digits
 		rightDigits.forEach((digit) -> System.out.print(digit + " "));
 	}
 	
-	public static Stream<Integer> getRightDigit(List<Integer> list) {
+	public static List<Integer> getRightDigit(List<Integer> list) {
 		
 		// use % 10 to convert all Integers to their right most digits
-		Stream<Integer> rightDigits = list.stream().map(l -> l % 10);
+		List<Integer> rightDigits = list.stream().map(l -> l % 10).collect(Collectors.toList());
 		return rightDigits;	
 	}
 

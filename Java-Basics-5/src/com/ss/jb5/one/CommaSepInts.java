@@ -3,10 +3,11 @@
  */
 package com.ss.jb5.one;
 
-import java.util.InputMismatchException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Elliot
@@ -21,45 +22,32 @@ public class CommaSepInts {
 	 * if they are even or odd
 	 */
 	public static void main(String[] args) {
-		System.out.println(getInts());
+
+		List<Integer> nums = Arrays.asList(3, 44, 99, 2, 39, 0, 1, 238);
+
+		String str = getString(nums);
+
+		System.out.println(str);
 
 	}
 	
-	public static String getInts() {
+	public static String getString(List<Integer> list) {
+		
+		List<String> strList = new LinkedList<>();
 
-		// ask user for ints and store in nums
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Enter list of integers");
-		String input = sc.nextLine();
-		String[] inputStr = input.split(" ");
-		
-		
-
-
-		
-		List<Integer> nums = new LinkedList<>();
-		
-		
-		try {
-			while (sc.hasNextInt()) {
-				nums.add(sc.nextInt());
+		// convert to strings and add o or e for odd or even
+		for (Integer i : list) {
+			if ((i % 2) == 0) {
+				strList.add("e" + Integer.toString(i));
 			}
-		} catch(InputMismatchException e) {
-			e.printStackTrace();
+			else {
+				strList.add("o" + Integer.toString(i));
+			}
 		}
 		
-		for (Integer num : nums) {
-			System.out.println(num);
-		}
-		
-		sc.close();
-		
-		return "this";
-		
-//		String separated = 
-		
-	}
-	
-	
+		// add commas between strings and concatonate to str
+		String str = strList.stream().collect(Collectors.joining(","));
 
+		return str;
+	}
 }

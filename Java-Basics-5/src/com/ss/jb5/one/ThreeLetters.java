@@ -5,7 +5,7 @@ package com.ss.jb5.one;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 /**
  * @author Elliot
@@ -25,16 +25,16 @@ public class ThreeLetters {
 							"and", "ant", "orange", "pineapple");
 		
 		// parse the strs
-		Stream<String> parsedStrs = parseList(strs);
+		List<String> parsedStrs = parseList(strs);
 		
 		// print the parsed list of strs
 		parsedStrs.forEach((str) -> System.out.println(str));
 	}
 	
-	public static Stream<String> parseList(List<String> list) {
+	public static List<String> parseList(List<String> list) {
 		
 		// filter the given list of strings to match the regex "a.."
-		Stream<String> result = list.stream().filter(l -> l.matches("a.."));
+		List<String> result = list.stream().filter(l -> l.matches("a..")).collect(Collectors.toList());
 		return result;
 		
 	}

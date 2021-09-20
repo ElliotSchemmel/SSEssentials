@@ -8,9 +8,12 @@ import java.util.Scanner;
 
 import com.ss.library.entity.Author;
 import com.ss.library.entity.Book;
+import com.ss.library.entity.BookAuthors;
+import com.ss.library.entity.BookLoans;
 import com.ss.library.entity.Borrower;
 import com.ss.library.entity.Branch;
 import com.ss.library.entity.Genre;
+import com.ss.library.entity.BookGenres;
 import com.ss.library.entity.Publisher;
 import com.ss.library.service.AdminService;
 
@@ -68,9 +71,24 @@ public class AdminMenu {
 		return;
 	}
 	
-	public void bookAndAuthorCRUD(Scanner sc) {
+	public void bookAndAuthorCRUD(Scanner sc) throws ClassNotFoundException, SQLException {
+
 		Book book = new Book();
+		List<Book> books = admin.readBooks();
+		
 		Author author = new Author();
+		List<Author> authors = admin.readAuthors();
+
+		Publisher publisher = new Publisher();
+		List<Publisher> publishers = admin.readPublishers();
+
+		Genre genre = new Genre();
+		List<Genre> genres = admin.readGenres();
+		
+		BookAuthors bookAuthors = new BookAuthors();
+		
+		BookGenres bookGenres = new BookGenres();
+
 		while (true) {
 			try {
 				System.out.println("1) Add");
@@ -80,14 +98,84 @@ public class AdminMenu {
 				System.out.println("5) Quit to previous");
 				
 				switch(sc.nextInt()) {
+					//add
 					case 1:
+						
+						for (Book b : books) {
+							System.out.println(b.getTitle());
+						}
+						System.out.println("Enter title of book to add as a string");
+						sc.nextLine();
+						String title = sc.nextLine();
+						book.setTitle(title);
+						
+						book.setBookId(books.size() + 1);
+						
+						for (Author a : authors) {
+							System.out.println(a.getAuthorId() + ") " + a.getAuthorName());
+						}
+						System.out.println("Enter ID of author to add");
+						int authorId = sc.nextInt();
+						book.setAuthId(authorId);
+						
+						for (Genre g : genres) {
+							System.out.println(g.getGenre_id() + ") " + g.getGenre_name());
+						}
+						System.out.println("Enter ID of genre to add");
+						int genreId = sc.nextInt();
+						bookGenres.setGenre_id(genreId);
+						
+						for (Publisher p : publishers) {
+							System.out.println(p.getPublisherId() + ") " + p.getPublisherName());
+						}
+						System.out.println("Enter ID of publisher to add");
+						int publisherId = sc.nextInt();
+						book.setPubId(publisherId);
+						
+						// add book
+						System.out.println(admin.addBook(book));
+						
+						// add entry to bookAuthors
+						bookAuthors.setBookId(book.getBookId());
+						bookAuthors.setAuthorId(authorId);
+						System.out.println(admin.addBookAuthors(bookAuthors));
+						
+						// add entry to bookGenres
+						bookGenres.setBookId(book.getBookId());
+						System.out.println(admin.addBookGenres(bookGenres));
+						
+						books.add(book);
+						
 						continue;
+						
+					//read
 					case 2:
+						// print list of all books, their authors, genres, and publishers
+						for (Book b : books) {
+							System.out.println(b.getTitle() + ", "
+									+ "By: " + 
+											admin.readAuthorsById(
+											admin.readAuthorIdByBookId(b.getBookId()).get(0).getAuthorId())
+											.get(0).getAuthorName()
+									+ ", Publisher: " +
+											admin.readPublishersById(b.getPubId()).get(0).getPublisherName()
+									+ ", Genre: " +
+											admin.readGenresById(
+											admin.readGenreByBookId(b.getBookId()).get(0).getGenre_id())
+											.get(0).getGenre_name()
+									);
+						}
 						continue;
+						
+					//update
 					case 3:
 						continue;
+
+					//delete
 					case 4:
 						continue;
+
+					//quit
 					case 5:
 						break;
 					default:
@@ -237,6 +325,7 @@ public class AdminMenu {
 									+ p.getPublisherAddress());
 						}
 						int id = sc.nextInt();
+						publisher.setPublisherId(id);
 
 						System.out.println("Enter new Name of publisher or N/A for no change");
 						sc.nextLine();
@@ -336,7 +425,9 @@ public class AdminMenu {
 									+ b.getBranchName() + ", " 
 									+ b.getBranchAddress());
 						}
+
 						int id = sc.nextInt();
+						branch.setBranchId(id);
 
 						System.out.println("Enter new Name of branch or N/A for no change");
 						sc.nextLine();
@@ -384,7 +475,7 @@ public class AdminMenu {
 		}
 	}
 		
-	private void borrowersCRUD(Scanner sc) {
+	private void borrowersCRUD(Scanner sc) throws SQLException, ClassNotFoundException {
 		// TODO Auto-generated method stub
 		
 		while (true) {
@@ -440,7 +531,9 @@ public class AdminMenu {
 									+ b.getAddress() + ", "
 									+ b.getPhone());
 						}
+
 						int id = sc.nextInt();
+						borrower.setCardNo(id);
 
 						System.out.println("Enter new Name of borrower or N/A for no change");
 						sc.nextLine();
@@ -495,8 +588,48 @@ public class AdminMenu {
 		}
 	}
 		
-	private void overRideDueDate(Scanner sc) {
-		// TODO Auto-generated method stub
+	private void overRideDueDate(Scanner sc) throws ClassNotFoundException, SQLException {
 		
+		List<BookLoans> bookLoans = admin.readBookLoans();
+		
+		while (true) {
+			try {
+
+				int count = 0;
+				
+				System.out.println("Select entry of book loans that you would like to override the due date of: ");
+				for (BookLoans bl : bookLoans) {
+					System.out.println(++count + ") " 
+							+ "bookId " + bl.getBookId()
+							+ " branchkId " + bl.getBranchId()
+							+ " cardNo " + bl.getCardNo()
+							+ " dateOut " + bl.getDateOut()
+							+ " dueDate " + bl.getDateDue()
+							+ " dateIn " + bl.getDateIn());
+				}
+				int id = sc.nextInt();
+				
+				if (id < 1 || id > count) {
+					System.out.println("Please enter an integer shown");
+					continue;
+				}
+				
+				
+				System.out.println("Enter new due date in format 'yyyy-mm-dd'");
+				sc.nextLine();
+				String dueDate = sc.nextLine();
+				
+				bookLoans.get(id - 1).setDateDue(java.sql.Date.valueOf(dueDate));
+				
+				admin.updateBookLoans(bookLoans.get(id - 1));
+				
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid input, please enter a valid integer");
+				sc.next();
+				continue;
+			}
+			break;
+		}
+		return;
 	}
 }

@@ -38,6 +38,17 @@ public class BookAuthorsDAO extends BaseDAO<BookAuthors>{
 		});
 	}
 
+	public List<BookAuthors> readBookIdByAuthorId(Integer authorId) throws SQLException, ClassNotFoundException {
+		return read("select * from tbl_book_authors where authorId = ?", new Object[] {
+				authorId
+		});
+	}
+	public List<BookAuthors> readAuthorIdByBookId(Integer bookId) throws SQLException, ClassNotFoundException {
+		return read("select * from tbl_book_authors where bookId = ?", new Object[] {
+				bookId
+		});
+	}
+
 	public List<BookAuthors> readAllBookAuthors() throws SQLException, ClassNotFoundException {
 		return read("select * from tbl_book_authors", null);
 	}

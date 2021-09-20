@@ -4,7 +4,15 @@ public class Book {
 	
 	private Integer bookId;
 	private String title;
+	private Integer authId;
 	private Integer pubId;
+
+	public Integer getAuthId() {
+		return authId;
+	}
+	public void setAuthId(Integer authId) {
+		this.authId = authId;
+	}
 	
 	public Integer getBookId() {
 		return bookId;

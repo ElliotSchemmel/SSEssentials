@@ -33,7 +33,7 @@ public class AuthorDAO extends BaseDAO<Author>{
 	}
 
 	public List<Author> readAuthorsById(Integer authorId) throws SQLException, ClassNotFoundException {
-		return read("select * from tbl_author where author_id = ?", new Object[] {
+		return read("select * from tbl_author where authorId = ?", new Object[] {
 				authorId
 		});
 	}

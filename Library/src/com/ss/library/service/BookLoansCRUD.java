@@ -35,6 +35,22 @@ public interface BookLoansCRUD {
 		}
 	}
 
+	default List<BookLoans> readBookLoans() throws ClassNotFoundException, SQLException {
+		
+		Connection conn = null;
+		
+		conn = util.getConnection();
+		BookLoansDAO bldao = new BookLoansDAO(conn);
+		List<BookLoans> bookLoans = bldao.readAllBookLoans();
+		
+		if (conn != null) {
+			conn.close();
+		}
+		
+		return bookLoans;
+		
+	}
+
 	default List<BookLoans> readBookLoansById(Integer cardNo) throws ClassNotFoundException, SQLException {
 		
 		Connection conn = null;

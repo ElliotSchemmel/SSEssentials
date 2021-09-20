@@ -22,7 +22,7 @@ public class BookLoansDAO extends BaseDAO<BookLoans>{
 	}
 
 	public void updateBookLoans(BookLoans bookLoans) throws ClassNotFoundException, SQLException {
-		save("update tbl_book_loans set dateOut = ?, dueDate = ?, dateIn = ?"
+		save("update tbl_book_loans set dateOut = ?, dueDate = ?, dateIn = ? "
 				+ "where bookId = ? and branchId = ? and cardNo = ?", new Object[] {
 				bookLoans.getDateOut(), bookLoans.getDateDue(), bookLoans.getDateIn(),
 				bookLoans.getBookId(), bookLoans.getBranchId(), bookLoans.getCardNo()

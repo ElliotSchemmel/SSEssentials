@@ -12,15 +12,6 @@ public class Main {
 
 	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 		
-		// Get list of all book titles
-/*		AdminService admin = new AdminService();
-		
-		List<Book> books = admin.readBooks();
-
-		for(Book b : books) {
-			System.out.println(b.getTitle());
-		}*/
-		
 		LibrarianMenu libMenu = new LibrarianMenu();
 		BorrowerMenu borMenu = new BorrowerMenu();
 		AdminMenu adminMenu = new AdminMenu();
@@ -29,7 +20,7 @@ public class Main {
 		
 		while (true) {
 			System.out.println("Welcome to the SS Library Management System." +
-					" Which catagory of a user are you");
+					" Which catagory of a user are you?");
 			System.out.println("1) Librarian");
 			System.out.println("2) Administrator");
 			System.out.println("3) Borrower");

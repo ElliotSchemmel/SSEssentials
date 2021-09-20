@@ -21,13 +21,13 @@ public class BookGenresDAO extends BaseDAO<BookGenres>{
 	}
 
 	public void updateGenre_id(BookGenres bookGenres) throws ClassNotFoundException, SQLException {
-		save("update tbl_book_genres genre_id = ? where bookId = ?", new Object[] {
+		save("update tbl_book_genres set genre_id = ? where bookId = ?", new Object[] {
 				bookGenres.getGenre_id(), bookGenres.getBookId()
 		});
 	}
 
 	public void updateBookId(BookGenres bookGenres) throws ClassNotFoundException, SQLException {
-		save("update tbl_book_genres bookId = ? where genre_id = ?", new Object[] {
+		save("update tbl_book_genres set bookId = ? where genre_id = ?", new Object[] {
 				bookGenres.getBookId(), bookGenres.getGenre_id()
 		});
 	}
@@ -39,7 +39,19 @@ public class BookGenresDAO extends BaseDAO<BookGenres>{
 		});
 	}
 
-	public List<BookGenres> readAllBookAuthors() throws SQLException, ClassNotFoundException {
+	public List<BookGenres> readGenreByBookId(Integer bookId) throws SQLException, ClassNotFoundException {
+		return read("select * from tbl_book_genres where bookId = ?", new Object[] {
+				bookId
+		});
+	}
+
+	public List<BookGenres> readBookByGenreId(Integer genreId) throws SQLException, ClassNotFoundException {
+		return read("select * from tbl_book_genres where genre_id = ?", new Object[] {
+				genreId
+		});
+	}
+
+	public List<BookGenres> readAllBookGenres() throws SQLException, ClassNotFoundException {
 		return read("select * from tbl_book_genres", null);
 	}
 

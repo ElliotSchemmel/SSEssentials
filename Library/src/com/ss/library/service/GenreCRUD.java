@@ -4,29 +4,29 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.ss.library.dao.BookDAO;
-import com.ss.library.entity.Book;
+import com.ss.library.dao.GenreDAO;
+import com.ss.library.entity.Genre;
 
-public interface BookCRUD {
+public interface GenreCRUD {
 	
 	Util util = new Util();
 
-	default String addBook(Book book) throws SQLException {
+	default String addGenre(Genre genre) throws SQLException {
 		
 		Connection conn = null;
 		
 		try {
 			conn = util.getConnection();
-			BookDAO bdao = new BookDAO(conn);
-			bdao.addBook(book);
+			GenreDAO gdao = new GenreDAO(conn);
+			gdao.addGenre(genre);
 			
 			conn.commit();
-			return "Book added successfully";
+			return "Genre added successfully";
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			conn.rollback();
-			return "Book could not be added";
+			return "Genre could not be added";
 
 		} finally {
 			if (conn != null) {
@@ -35,53 +35,53 @@ public interface BookCRUD {
 		}
 	}
 	
-	default List<Book> readBooks() throws ClassNotFoundException, SQLException {
+	default List<Genre> readGenres() throws ClassNotFoundException, SQLException {
 		
 		Connection conn = null;
 		
 		conn = util.getConnection();
-		BookDAO bdao = new BookDAO(conn);
-		List<Book> books = bdao.readAllBooks();
+		GenreDAO gdao = new GenreDAO(conn);
+		List<Genre> genres = gdao.readAllGenres();
 		
 		if (conn != null) {
 			conn.close();
 		}
 		
-		return books;
+		return genres;
 	}
 
-	default List<Book> readBooksById(Integer bookId) throws ClassNotFoundException, SQLException {
+	default List<Genre> readGenresById(Integer genre_id) throws ClassNotFoundException, SQLException {
 		
 		Connection conn = null;
 		
 		conn = util.getConnection();
-		BookDAO bdao = new BookDAO(conn);
-		List<Book> books = bdao.readBooksById(bookId);
+		GenreDAO gdao = new GenreDAO(conn);
+		List<Genre> genres = gdao.readGenresById(genre_id);
 		
 		if (conn != null) {
 			conn.close();
 		}
 		
-		return books;
+		return genres;
 		
 	}
 
-	default String updateBook(Book book) throws SQLException {
+	default String updateGenre(Genre genre) throws SQLException {
 		
 		Connection conn = null;
 		
 		try {
 			conn = util.getConnection();
-			BookDAO bdao = new BookDAO(conn);
-			bdao.updateBook(book);
+			GenreDAO gdao = new GenreDAO(conn);
+			gdao.updateGenre(genre);
 			
 			conn.commit();
-			return "Book updated successfully";
+			return "Genre updated successfully";
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			conn.rollback();
-			return "Book could not be updated";
+			return "Genre could not be updated";
 
 		} finally {
 			if (conn != null) {
@@ -90,22 +90,22 @@ public interface BookCRUD {
 		}
 	}
 
-	default String deleteBook(Book book) throws SQLException {
+	default String deleteGenre(Genre genre) throws SQLException {
 		
 		Connection conn = null;
 		
 		try {
 			conn = util.getConnection();
-			BookDAO bdao = new BookDAO(conn);
-			bdao.deleteBook(book);
+			GenreDAO gdao = new GenreDAO(conn);
+			gdao.deleteGenre(genre);
 			
 			conn.commit();
-			return "Book deleted successfully";
+			return "Genre deleted successfully";
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			conn.rollback();
-			return "Book could not be deleted";
+			return "Genre could not be deleted";
 
 		} finally {
 			if (conn != null) {

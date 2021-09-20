@@ -15,8 +15,8 @@ public class BookDAO extends BaseDAO<Book>{
 	}
 	
 	public void addBook(Book book) throws ClassNotFoundException, SQLException {
-		save("insert into tbl_book values (?, ?, ?)", new Object[] {
-				book.getBookId(), book.getTitle(), book.getPubId()
+		save("insert into tbl_book values (?, ?)", new Object[] {
+				book.getTitle(), book.getPubId()
 		});
 	}
 

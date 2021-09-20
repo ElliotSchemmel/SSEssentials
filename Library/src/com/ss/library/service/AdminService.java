@@ -1,6 +1,6 @@
 package com.ss.library.service;
 
 public class AdminService implements BookCRUD, LibraryBranchCRUD, BookCopiesCRUD, BorrowerCRUD,
-	BookLoansCRUD
+	BookLoansCRUD, AuthorCRUD, GenreCRUD, PublisherCRUD
 {
 }

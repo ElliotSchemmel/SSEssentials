@@ -23,6 +23,7 @@ public class Main {
 		
 		LibrarianMenu libMenu = new LibrarianMenu();
 		BorrowerMenu borMenu = new BorrowerMenu();
+		AdminMenu adminMenu = new AdminMenu();
 		Scanner sc = new Scanner(System.in);
 		
 		
@@ -40,6 +41,7 @@ public class Main {
 						libMenu.getMenuOne(sc);
 						continue;
 					case 2:
+						adminMenu.getMenuOne(sc);
 						continue;
 					case 3: 
 						borMenu.getMenuOne(sc);

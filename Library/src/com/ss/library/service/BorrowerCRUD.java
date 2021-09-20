@@ -11,6 +11,30 @@ public interface BorrowerCRUD {
 
 	Util util = new Util();
 	
+	default String addBorrower(Borrower borrower) throws SQLException {
+		
+		Connection conn = null;
+		
+		try {
+			conn = util.getConnection();
+			BorrowerDAO bdao = new BorrowerDAO(conn);
+			bdao.addBorrower(borrower);
+			
+			conn.commit();
+			return "borrower added successfully";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			return "borrower could not be added";
+
+		} finally {
+			if (conn != null) {
+				conn.close();
+			}
+		}
+	}
+	
 	default List<Borrower> readAllBorrowers() throws ClassNotFoundException, SQLException {
 		
 		Connection conn = null;
@@ -40,5 +64,53 @@ public interface BorrowerCRUD {
 		
 		return borrowers;
 		
+	}
+
+	default String updateBorrower(Borrower borrower) throws SQLException {
+		
+		Connection conn = null;
+		
+		try {
+			conn = util.getConnection();
+			BorrowerDAO bdao = new BorrowerDAO(conn);
+			bdao.updateBorrower(borrower);
+			
+			conn.commit();
+			return "borrower updated successfully";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			return "borrower could not be updated";
+
+		} finally {
+			if (conn != null) {
+				conn.close();
+			}
+		}
+	}
+
+	default String deleteBorrower(Borrower borrower) throws SQLException {
+		
+		Connection conn = null;
+		
+		try {
+			conn = util.getConnection();
+			BorrowerDAO bdao = new BorrowerDAO(conn);
+			bdao.deleteBorrower(borrower);
+			
+			conn.commit();
+			return "borrower added successfully";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			return "borrower could not be added";
+
+		} finally {
+			if (conn != null) {
+				conn.close();
+			}
+		}
 	}
 }

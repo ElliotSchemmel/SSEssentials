@@ -146,9 +146,9 @@ public class BorrowerMenu {
 
 						System.out.println("Select number of book you wish to check out");
 						for(Book b : books) {
-							System.out.println(++count2 + " ) " + b.getTitle());
+							System.out.println(++count2 + ") " + b.getTitle());
 						}
-						System.out.println(++count2 + " ) Quit to previous");
+						System.out.println(++count2 + ") Quit to previous");
 						
 						int choice = sc.nextInt();
 
@@ -190,17 +190,12 @@ public class BorrowerMenu {
 						bookCopies.setNoOfCopies(admin.readNoOfCopiesById(bookCopies) - 1);
 						System.out.println(admin.updateBookCopies(bookCopies));
 					
-						
-						
-						
 					} catch (InputMismatchException e) {
 						System.out.println("Incorrect input, please enter a valid integer");
 						sc.next();
 						continue;
 					}
 				} 
-				
-				
 			} catch(InputMismatchException e) {
 				System.out.println("Incorrect input, please enter a valid integer");
 				sc.next();
@@ -225,9 +220,9 @@ public class BorrowerMenu {
 				// print out list of book titles currently checked out by user
 				System.out.println("Select which book you would like to return");
 				for(BookLoans bl : bookLoans) {
-					System.out.println(++count + " ) " + admin.readBooksById(bl.getBookId()).get(0).getTitle());
+					System.out.println(++count + ") " + admin.readBooksById(bl.getBookId()).get(0).getTitle());
 				}
-				System.out.println(++count + " ) Quit to previous");
+				System.out.println(++count + ") Quit to previous");
 				
 				// get input and verify input
 				int choice = sc.nextInt();
@@ -250,7 +245,6 @@ public class BorrowerMenu {
 				bookCopies.setBranchId(bookLoans.get(choice - 1).getBranchId());
 				bookCopies.setNoOfCopies(admin.readNoOfCopiesById(bookCopies) + 1);
 				System.out.println(admin.updateBookCopies(bookCopies));
-				
 						
 			} catch(InputMismatchException e) {
 				System.out.println("Incorrect input, please enter a valid integer");

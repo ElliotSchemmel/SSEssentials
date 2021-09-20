@@ -15,8 +15,7 @@ public class PublisherDAO extends BaseDAO<Publisher>{
 	}
 	
 	public void addPublisher(Publisher publisher) throws ClassNotFoundException, SQLException {
-		save("insert into tbl_publisher values (?, ?, ?)", new Object[] {
-				publisher.getPublisherId(),
+		save("insert into tbl_publisher values (?, ?)", new Object[] {
 				publisher.getPublisherName(),
 				publisher.getPublisherAddress()
 		});
@@ -33,6 +32,12 @@ public class PublisherDAO extends BaseDAO<Publisher>{
 	public void deletePublisher(Publisher publisher) throws ClassNotFoundException, SQLException {
 		save("delete from tbl_publisher where publisherId = ?", new Object[] {
 				publisher.getPublisherId()
+		});
+	}
+
+	public List<Publisher> readPublishersById(Integer publisherId) throws SQLException, ClassNotFoundException {
+		return read("select * from tbl_publisher where publisherId = ?", new Object[] {
+				publisherId
 		});
 	}
 

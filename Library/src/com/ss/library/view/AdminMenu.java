@@ -687,7 +687,8 @@ public class AdminMenu {
 
 				int count = 0;
 				
-				System.out.println("Select entry of book loans that you would like to override the due date of: ");
+				System.out.println("Select entry of book loans that you would like to override the due date of");
+				System.out.println("Enter 0 to quit to previous");
 				for (BookLoans bl : bookLoans) {
 					System.out.println(++count + ") " 
 							+ "bookId " + bl.getBookId()
@@ -699,6 +700,10 @@ public class AdminMenu {
 				}
 				int id = sc.nextInt();
 				
+				if (id == 0) {
+					break;
+				}
+				
 				if (id < 1 || id > count) {
 					System.out.println("Please enter an integer shown");
 					continue;
@@ -708,6 +713,7 @@ public class AdminMenu {
 				System.out.println("Enter new due date in format 'yyyy-mm-dd'");
 				sc.nextLine();
 				String dueDate = sc.nextLine();
+				
 				
 				bookLoans.get(id - 1).setDateDue(java.sql.Date.valueOf(dueDate));
 				

@@ -53,6 +53,7 @@ public class LibrarianMenu {
 		for(Branch b : branches) {
 			System.out.println(++count + ") " + b.getBranchName() + ", " + b.getBranchAddress());
 		}
+		System.out.println("Enter number of branch you manage");
 		
 		while (true) {
 			try {

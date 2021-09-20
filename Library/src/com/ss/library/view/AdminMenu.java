@@ -98,13 +98,15 @@ public class AdminMenu {
 				System.out.println("5) Quit to previous");
 				
 				switch(sc.nextInt()) {
+
 					//add
 					case 1:
 						
+						System.out.println("Current Book Titles: ");
 						for (Book b : books) {
 							System.out.println(b.getTitle());
 						}
-						System.out.println("Enter title of book to add as a string");
+						System.out.println("Enter new title of book to add as a string");
 						sc.nextLine();
 						String title = sc.nextLine();
 						book.setTitle(title);
@@ -152,8 +154,9 @@ public class AdminMenu {
 					case 2:
 						// print list of all books, their authors, genres, and publishers
 						for (Book b : books) {
-							System.out.println(b.getTitle() + ", "
-									+ "By: " + 
+							System.out.println(b.getBookId() + ") " 
+									+ b.getTitle() 
+									+ ", By: " + 
 											admin.readAuthorsById(
 											admin.readAuthorIdByBookId(b.getBookId()).get(0).getAuthorId())
 											.get(0).getAuthorName()
@@ -168,16 +171,103 @@ public class AdminMenu {
 						continue;
 						
 					//update
-					case 3:
+					case 3:						
+						System.out.println("Select book to update");
+						for (Book b : books) {
+							System.out.println(b.getBookId() + ") " + b.getTitle());
+						}
+						System.out.println("Enter ID of book to update");
+						int bookId = sc.nextInt();
+						if (bookId < 1 || bookId > books.size()) {
+							System.out.println("Book ID " + bookId + " is not in database");
+							continue;
+						}
+						book.setBookId(bookId);
+						
+						System.out.println("Enter new title or N/A for no change");
+						sc.nextLine();
+						String title1 = sc.nextLine();
+						if (!"N/A".equals(title1)) {
+							book.setTitle(title1);
+						}
+
+						
+						for (Author a : authors) {
+							System.out.println(a.getAuthorId() + ") " + a.getAuthorName());
+						}
+						System.out.println("Enter ID of new author or 0 for no change");
+						int authorId1 = sc.nextInt();
+						if (authorId1 != 0) {
+							book.setAuthId(authorId1);
+						}
+						
+						for (Genre g : genres) {
+							System.out.println(g.getGenre_id() + ") " + g.getGenre_name());
+						}
+						System.out.println("Enter ID of new genre or 0 for no change");
+						int genreId1 = sc.nextInt();
+						if (genreId1 != 0) {
+							bookGenres.setGenre_id(genreId1);
+						}
+						
+						for (Publisher p : publishers) {
+							System.out.println(p.getPublisherId() + ") " + p.getPublisherName());
+						}
+						System.out.println("Enter ID of new publisher or 0 for no change");
+						int publisherId1 = sc.nextInt();
+						if (publisherId1 != 0) {
+							book.setPubId(publisherId1);
+						}
+						
+						// add book
+						System.out.println(admin.updateBook(book));
+						
+						// add entry to bookAuthors
+						if (authorId1 != 0) {
+							bookAuthors.setBookId(book.getBookId());
+							bookAuthors.setAuthorId(authorId1);
+							System.out.println(admin.updateAuthorId(bookAuthors));
+						}
+						
+						// add entry to bookGenres
+						if (genreId1 != 0) {
+							bookGenres.setBookId(book.getBookId());
+							bookGenres.setGenre_id(genreId1);
+							System.out.println(admin.updateGenre_id(bookGenres));
+						}
+						
+						// replace entry in books
+						books.set(book.getBookId() - 1, book);
+						for (Book b : books) {
+							System.out.println(b.getTitle());
+						}
+						
 						continue;
 
 					//delete
 					case 4:
+
+						for (Book b : books) {
+							System.out.println(b.getBookId() + ") " + b.getTitle());
+						}
+						System.out.println("Enter ID of book to delete");
+						int toDelete = sc.nextInt();
+						if (toDelete < 1 || toDelete > books.size()) {
+							System.out.println("Book ID " + toDelete + " not found, no deletion occured");
+							continue;
+						}
+							
+						// delete book from database and update books list
+						System.out.println(admin.deleteBook(book));
+						books.remove(toDelete - 1);
+
 						continue;
 
 					//quit
 					case 5:
 						break;
+
+					// wrong number entered 
 					default:
 						System.out.println("Enter a number 1-5");
 						continue;

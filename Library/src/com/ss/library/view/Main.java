@@ -21,6 +21,10 @@ public class Main {
 			System.out.println(b.getTitle());
 		}*/
 		
+		LibrarianMenu libMenu = new LibrarianMenu();
+		BorrowerMenu borMenu = new BorrowerMenu();
+		Scanner sc = new Scanner(System.in);
+		
 		
 		while (true) {
 			System.out.println("Welcome to the SS Library Management System." +
@@ -31,13 +35,14 @@ public class Main {
 			System.out.println("4) Quit");
 
 			try {
-				Scanner sc = new Scanner(System.in);
 				switch(sc.nextInt()) {
 					case 1:
+						libMenu.getMenuOne(sc);
 						continue;
 					case 2:
 						continue;
 					case 3: 
+						borMenu.getMenuOne(sc);
 						continue;
 					case 4:
 						break;
@@ -45,13 +50,14 @@ public class Main {
 						System.out.println("Incorrect input, please enter 1, 2, 3, or 4");
 						continue;
 				}
-				sc.close();
 			} catch (InputMismatchException e) {
 				System.out.println("Incorrect input, please enter 1, 2, 3, or 4");
+				sc.next();
 				continue;
 			}
 			break;
 		}
+		sc.close();
 		
 	}
 

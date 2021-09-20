@@ -23,7 +23,7 @@ public class LibraryBranchDAO extends BaseDAO<Branch>{
 	}
 
 	public void updateLibraryBranch(Branch branch) throws ClassNotFoundException, SQLException {
-		save("update tbl_library_branch set branchName = ? and branchAddress ? where branchId = ?", new Object[] {
+		save("update tbl_library_branch set branchName = ?, branchAddress = ? where branchId = ?", new Object[] {
 				 branch.getBranchName(), branch.getBranchAddress(), branch.getBranchId()
 		});
 	}

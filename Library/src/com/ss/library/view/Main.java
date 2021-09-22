@@ -20,7 +20,7 @@ public class Main {
 		
 		while (true) {
 			System.out.println("Welcome to the SS Library Management System." +
-					" Which catagory of a user are you?");
+					" Which category of a user are you?");
 			System.out.println("1) Librarian");
 			System.out.println("2) Administrator");
 			System.out.println("3) Borrower");

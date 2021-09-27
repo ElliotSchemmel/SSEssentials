@@ -36,6 +36,12 @@ public class BookingUserDAO extends BaseDAO<BookingUser>{
 				booking_id
 		});
 	}
+
+	public List<BookingUser> readBookingUsersByUserId(Integer user_id) throws ClassNotFoundException, SQLException {
+		return read("SELECT * FROM booking_user WHERE user_id = ?", new Object[] {
+				user_id
+		});
+	}
 	
 	@Override
 	public List<BookingUser> extractData(ResultSet rs) throws ClassNotFoundException, SQLException {

@@ -66,6 +66,22 @@ public interface BookingUserCRUD {
 		
 	}
 
+	default List<BookingUser> readBookingUsersByUserId(Integer id) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = null;
+		
+		conn = util.getConnection();
+		BookingUserDAO budao = new BookingUserDAO(conn);
+		List<BookingUser> bookingUsers = budao.readBookingUsersByUserId(id);
+		
+		if (conn != null) {
+			conn.close();
+		}
+		
+		return bookingUsers;
+		
+	}
+
 	default String updateBookingUser(BookingUser bookingUser) throws SQLException {
 		
 		Connection conn = null;

@@ -3,10 +3,12 @@ package com.ss.utopia.view;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import com.ss.utopia.entity.Airplane;
 import com.ss.utopia.entity.Airport;
@@ -24,50 +26,77 @@ public class AdministratorMenu {
 
 	public void getMenuOne(Scanner sc) throws ClassNotFoundException, SQLException {
 		
+		Boolean hasLooped = false;
+		Boolean foundAdmin = false;
+	
 		while (true) {
 			try {
+				
+				if (!foundAdmin) {
+					List<User> admins = admin.readUsersByRoleId(3);
+					
+					System.out.println("Enter your Username:"); 
+					if (!hasLooped) {
+						sc.nextLine();
+					}
+					String username = sc.nextLine(); 
+					System.out.println("Enter your Password:"); 
+					String password = sc.nextLine();
+					
+					
+					for (User a : admins) {
+						if (username.equals(a.getUsername())) {
+							if (password.equals(a.getPassword())) {
+								foundAdmin = true;
+							}
+						}
+					}
+					
+					if (!foundAdmin) { 
+						System.out.println("No admin with given username and password found in database, try again");
+						hasLooped = true;
+						continue;
+					}
+				}
+				
 				System.out.println("Choose Administrator function: ");
 				System.out.println("1) Add/Update/Delete/Read Flights");
-				System.out.println("2) Add/Update/Delete/Read Seats");
-				System.out.println("3) Add/Update/Delete/Read Tickets and Passengers");
-				System.out.println("4) Add/Update/Delete/Read Airports");
-				System.out.println("5) Add/Update/Delete/Read Travelers");
-				System.out.println("6) Add/Update/Delete/Read Employees");
-				System.out.println("7) Over-ride Trip Cancellation for a ticket");
-				System.out.println("8) Quit to previous");
+				System.out.println("2) Add/Update/Delete/Read Tickets and Passengers");
+				System.out.println("3) Add/Update/Delete/Read Airports");
+				System.out.println("4) Add/Update/Delete/Read Travelers");
+				System.out.println("5) Add/Update/Delete/Read Employees");
+				System.out.println("6) Over-ride Trip Cancellation for a ticket");
+				System.out.println("7) Quit to previous");
 				
 				switch(sc.nextInt()) {
 					case 1:
 						this.flightCRUD(sc);
 						continue;
 					case 2:
-						this.seatCRUD(sc);
-						continue;
-					case 3:
 						this.ticketAndPassengerCRUD(sc);
 						continue;
-					case 4:
+					case 3:
 						this.airportCRUD(sc);
 						continue;
-					case 5:
+					case 4:
 						this.travelerCRUD(sc);
 						continue;
-					case 6: 
+					case 5: 
 						this.employeeCRUD(sc);
 						continue;
-					case 7: 
+					case 6: 
 						this.overRideTicketCancellation(sc);
 						continue;
-					case 8: 
+					case 7: 
 						break;
 					default:
-						System.out.println("Enter a number 1-8");
+						System.out.println("Enter a number 1-7");
 						continue;
 				}
 				
 				
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, try again enter 1-8");
+				System.out.println("Invalid input, try again enter 1-7");
 				sc.next();
 				continue;
 			}
@@ -543,53 +572,6 @@ public class AdministratorMenu {
 		
 	}
 
-	private void seatCRUD(Scanner sc) {
-		// TODO Auto-generated method stub
-		while (true) {
-			try {
-				System.out.println("Choose CRUD action: ");
-				System.out.println("1) Add");
-				System.out.println("2) Update");
-				System.out.println("3) Read");
-				System.out.println("4) Delete");
-				System.out.println("5) Quit");
-
-				switch(sc.nextInt()) {
-				
-					// add
-					case 1:
-						continue;
-						
-					// update
-					case 2:
-						continue;
-						
-					// read
-					case 3:
-						continue;
-						
-					//delete
-					case 4:
-						continue;
-						
-					//quit
-					case 5:
-						break;
-
-					default:
-						System.out.println("Invalid input, try again enter 1-5");
-						continue;
-				}
-			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, try again enter 1-5");
-				sc.next();
-				continue;
-			}
-			break;
-		}
-		return;	// once deleted, delete all associated routes
-		
-	}
 
 	private void ticketAndPassengerCRUD(Scanner sc) throws ClassNotFoundException, SQLException {
 		
@@ -1423,11 +1405,79 @@ public class AdministratorMenu {
 		
 	}
 
-	private void overRideTicketCancellation(Scanner sc) {
+	private void overRideTicketCancellation(Scanner sc) throws SQLException, ClassNotFoundException {
 		
 		// from the cancel trip function in the Traveler menu, 
 		// get a list of cancelled trips and ask the user which one 
 		// they would like to override and re-book that ticket
-		
+				
+		while (true) {
+			try {
+				
+				/*List<BookingUser> bookingUsers = admin.readBookingUsersByUserId(user.getId());
+				List<Booking> bookings = new ArrayList<Booking>();
+				
+				for (BookingUser bu : bookingUsers) {
+					bookings.add(admin.readBookingsById(bu.getBooking_id()).get(0));
+				}*/
+				
+				List<Booking> bookings = admin.readBookings();
+				
+				List<Booking> inactiveBookings = bookings.stream().filter(e -> (e.getIs_active() == 0)).collect(Collectors.toList());
+				
+				List<Flight> bookedFlights = new ArrayList<Flight>();
+				
+				for (Booking ib : inactiveBookings) {
+					bookedFlights.add(admin.readFlightsById(admin.readFlightBookingsByBookingId(
+							ib.getId()).get(0).getFlight_id()).get(0));
+				}
+				
+				System.out.println("Pick one of the cancelled flights to override");
+				
+				int count = 0;
+				for (Flight f : bookedFlights) {
+					System.out.println(
+							++count + ") " +
+							"Booking Id: " + inactiveBookings.get(count - 1).getId() +
+							admin.readAirportsById(admin.readRoutesById(f.getRoute_id()).get(0).getOrigin_id()).get(0).getIata_id()
+							+ ", " +
+							admin.readAirportsById(admin.readRoutesById(f.getRoute_id()).get(0).getOrigin_id()).get(0).getCity()
+							+ " -> " +
+							admin.readAirportsById(admin.readRoutesById(f.getRoute_id()).get(0).getDestination_id()).get(0).getIata_id()
+							+ ", " +
+							admin.readAirportsById(admin.readRoutesById(f.getRoute_id()).get(0).getDestination_id()).get(0).getCity()
+							);
+				}
+				System.out.println(++count + ") Quit to previous");
+				
+				int selection = sc.nextInt();
+				
+				if (selection == count) {
+					break;
+				}
+				else if (selection < 1 || selection > count) {
+					System.out.println("Enter one of the given integers");
+					continue;
+				}
+				
+				// add seat to chosen flight
+				Integer seats = bookedFlights.get(selection - 1).getReserved_seats();
+				bookedFlights.get(selection - 1).setReserved_seats(seats + 1);
+				
+				// set booking to active
+				inactiveBookings.get(selection - 1).setIs_active(1);
+				
+				System.out.println(admin.updateFlight(bookedFlights.get(selection - 1)));
+				System.out.println(admin.updateBooking(inactiveBookings.get(selection - 1)));
+				
+				break;
+				
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid input, enter a valid User Id");
+				sc.next();
+				continue;
+			}
+		}
+		return;	
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.ss.utopia.entity.Flight;
+import com.ss.utopia.entity.User;
 import com.ss.utopia.service.AdminService;
 
 public class EmployeeMenu {
@@ -15,9 +16,40 @@ public class EmployeeMenu {
 	
 	public void getMenuOne(Scanner sc) throws ClassNotFoundException, SQLException {
 		
+		Boolean hasLooped = false;
+		
 		while (true) {
 			try {
-				System.out.println("1) Enter Flights You Manage");
+
+				List<User> employees = admin.readUsersByRoleId(1);
+				
+				System.out.println("Enter your Username:"); 
+				if (!hasLooped) {
+					sc.nextLine();
+				}
+				String username = sc.nextLine(); 
+				System.out.println("Enter your Password:"); 
+				String password = sc.nextLine();
+				
+				Boolean foundEmployee = false;
+				
+				for (User e : employees) {
+					if (username.equals(e.getUsername())) {
+						if (password.equals(e.getPassword())) {
+							this.getMenuTwo(sc);
+							foundEmployee = true;
+						}
+					}
+				}
+				
+				if (foundEmployee) break;
+
+				else {
+					System.out.println("No employee with given username and password found in database, try again");
+					hasLooped = true;
+					continue;
+				}
+			/*	System.out.println("1) View Flights You Manage");
 				System.out.println("2) Quit to previous");
 				
 				switch(sc.nextInt()) {
@@ -30,14 +62,13 @@ public class EmployeeMenu {
 						System.out.println("Enter a number 1-2");
 						continue;
 				}
-				
+			*/	
 				
 			} catch (InputMismatchException e) {
 				System.out.println("Invalid input, try again enter 1-2");
 				sc.next();
 				continue;
 			}
-			break;
 		}
 		return;
 	}
@@ -53,6 +84,7 @@ public class EmployeeMenu {
 				
 				int count = 0;
 				
+				System.out.println("Select Flight to Manage");
 				for (Flight f : flights) {
 					System.out.println(
 							++count + ") " +

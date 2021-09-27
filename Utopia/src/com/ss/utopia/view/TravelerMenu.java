@@ -40,7 +40,7 @@ public class TravelerMenu {
 		return;
 	}
 
-	private void getMenuTwo(Scanner sc, User user) {
+	private void getMenuTwo(Scanner sc, User user) throws ClassNotFoundException, SQLException {
 
 		while (true) {
 			try {
@@ -110,6 +110,7 @@ public class TravelerMenu {
 				}
 				
 				// book flight with flights.get(selection).getId()
+				// add reserved seat and link user to the flight
 				
 				
 			} catch (InputMismatchException e) {
@@ -130,6 +131,8 @@ public class TravelerMenu {
 				List<Flight> flights = admin.readFlights();
 				
 				System.out.println("Pick the flight you want to cancel a ticket for: ");
+				
+				// list flights that the user currently has booked to select from
 				
 				int count = 0;
 				

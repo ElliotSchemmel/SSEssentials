@@ -17,6 +17,11 @@ public class RouteDAO extends BaseDAO<Route>{
 				route.getOrigin_id(), route.getDestination_id()}); 
 	}
 
+	public Integer addRouteReturnPK(Route route) throws ClassNotFoundException, SQLException {
+		return saveReturnPK("INSERT INTO route (origin_id, destination_id) VALUES (?, ?)", new Object[] {
+				route.getOrigin_id(), route.getDestination_id()}); 
+	}
+
 	public void updateRoute(Route route) throws ClassNotFoundException, SQLException {
 		save("UPDATE route SET origin_id = ?, destination_id = ? WHERE id = ?", new Object[] { 
 				route.getOrigin_id(), route.getDestination_id(), route.getId()});

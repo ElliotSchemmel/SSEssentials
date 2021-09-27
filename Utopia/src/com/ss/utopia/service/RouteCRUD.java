@@ -34,6 +34,30 @@ public interface RouteCRUD {
 			}
 		}
 	}
+
+	default Integer addRouteReturnPK(Route route) throws SQLException {
+		
+		Connection conn = null;
+		
+		try {
+			conn = util.getConnection();
+			RouteDAO rdao = new RouteDAO(conn);
+			Integer pk = rdao.addRouteReturnPK(route);
+			
+			conn.commit();
+			return pk;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			return 0;
+
+		} finally {
+			if (conn != null) {
+				conn.close();
+			}
+		}
+	}
 	
 	default List<Route> readRoutes() throws ClassNotFoundException, SQLException {
 		

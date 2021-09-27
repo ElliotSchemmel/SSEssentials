@@ -34,6 +34,30 @@ public interface BookingCRUD {
 			}
 		}
 	}
+
+	default Integer addBookingReturnPK(Booking booking) throws SQLException {
+		
+		Connection conn = null;
+		
+		try {
+			conn = util.getConnection();
+			BookingDAO bdao = new BookingDAO(conn);
+			Integer pk = bdao.addBookingReturnPK(booking);
+			
+			conn.commit();
+			return pk;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			return 0;
+
+		} finally {
+			if (conn != null) {
+				conn.close();
+			}
+		}
+	}
 	
 	default List<Booking> readBookings() throws ClassNotFoundException, SQLException {
 		

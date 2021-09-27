@@ -35,6 +35,12 @@ public class FlightBookingsDAO extends BaseDAO<FlightBookings>{
 	public List<FlightBookings> readFlightBookings() throws ClassNotFoundException, SQLException {
 		return read("SELECT * FROM flight_bookings", null);
 	}
+
+	public List<FlightBookings> readFlightBookingsByBookingId(Integer booking_id) throws ClassNotFoundException, SQLException {
+		return read("SELECT * FROM flight_bookings WHERE booking_id = ?", new Object[] {
+				booking_id
+		});
+	}
 	
 	@Override
 	public List<FlightBookings> extractData(ResultSet rs) throws ClassNotFoundException, SQLException {

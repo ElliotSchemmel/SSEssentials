@@ -24,9 +24,9 @@ public abstract class BaseDAO<T> {
 			count++;
 		}
 		pstmt.executeUpdate();
-		ResultSet rs = pstmt.executeQuery();
+		ResultSet rs = pstmt.getGeneratedKeys();
 		while (rs.next()) {
-			return rs.getInt(1); // double check this could be 0
+			return rs.getInt(1); 
 		}
 		return null;
 	}

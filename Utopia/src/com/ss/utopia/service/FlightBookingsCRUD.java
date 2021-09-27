@@ -50,6 +50,21 @@ public interface FlightBookingsCRUD {
 		return flightBookingss;
 	}
 
+	default List<FlightBookings> readFlightBookingsByBookingId(Integer booking_id) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = null;
+		
+		conn = util.getConnection();
+		FlightBookingsDAO fbdao = new FlightBookingsDAO(conn);
+		List<FlightBookings> flightBookingss = fbdao.readFlightBookingsByBookingId(booking_id);
+		
+		if (conn != null) {
+			conn.close();
+		}
+		
+		return flightBookingss;
+	}
+
 	default String updateFlightBookingsFlight_id(FlightBookings flightBookings) throws SQLException {
 		
 		Connection conn = null;

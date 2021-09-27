@@ -50,6 +50,21 @@ public interface UserCRUD {
 		return users;
 	}
 
+	default List<User> readUsersByRoleId(Integer role_id) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = null;
+		
+		conn = util.getConnection();
+		UserDAO udao = new UserDAO(conn);
+		List<User> users = udao.readUsersByRoleId(role_id);
+		
+		if (conn != null) {
+			conn.close();
+		}
+		
+		return users;
+	}
+
 	default List<User> readUsersById(Integer id) throws ClassNotFoundException, SQLException {
 		
 		Connection conn = null;

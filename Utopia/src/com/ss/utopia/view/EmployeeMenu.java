@@ -1,13 +1,12 @@
 package com.ss.utopia.view;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import com.ss.utopia.entity.Airport;
 import com.ss.utopia.entity.Flight;
-import com.ss.utopia.entity.Route;
 import com.ss.utopia.service.AdminService;
 
 public class EmployeeMenu {
@@ -51,8 +50,6 @@ public class EmployeeMenu {
 			
 			try {
 				List<Flight> flights = admin.readFlights();
-				List<Route> routes = admin.readRoutes();
-				List<Airport> airports = admin.readAirports();
 				
 				int count = 0;
 				
@@ -173,21 +170,36 @@ public class EmployeeMenu {
 				
 				// get route_id from combination or make new one if none exists and cities are valid and different
 
-				System.out.println("Please enter new Departure Date or enter N/A for no change: ");
+				System.out.println("Please enter new Departure Date in format 'yyyy-mm-dd' or enter N/A for no change: ");
 				String date = sc.nextLine();
+				String flightDate;
 				if (!"N/A".equals(date)) {
-					String flightDate = date;
+					flightDate = date;
+				}
+				else { 
+					flightDate = flight.getDeparture_time().toString().split(" ")[0];
 				}
 				
-				System.out.println("Please enter new Departure time or enter N/A for no change: ");
+				System.out.println("Please enter new Departure time in format 'hh:mm:ss' or enter N/A for no change: ");
 				String time = sc.nextLine();
+				String flightTime;
 				if (!"N/A".equals(time)) {
-					String flightTime = time;
+					flightTime = time;
+				}
+				else { 
+					flightTime = flight.getDeparture_time().toString().split(" ")[1];
 				}
 				
 				// concatenate date and time to add to flight.departure_time
+				String dateTime = flightDate + " " + flightTime;
+				
+				flight.setDeparture_time(Timestamp.valueOf(dateTime));
 				
 				// update flight and return statement
+				System.out.println(admin.updateFlight(flight));
+				
+				break;	
+				
 			}
 			catch (InputMismatchException e) {
 				System.out.println("Invalid input, enter a valid integer");
@@ -195,6 +207,7 @@ public class EmployeeMenu {
 				continue;
 			}
 		}
+		return;
 		
 	}
 

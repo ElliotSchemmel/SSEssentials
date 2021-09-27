@@ -2,7 +2,6 @@ package com.ss.utopia.view;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.InputMismatchException;
@@ -673,23 +672,147 @@ public class AdministratorMenu {
 						
 						// set the pk from booking as the passenger.booking_id
 						addPassenger.setBooking_id(pk);
+
+						// update flight to add one to reserved_seats
+						Integer seats = flights.get(selection - 1).getReserved_seats();
+						seats++;
+						flights.get(selection - 1).setReserved_seats(seats);
 						
 						// add entries to tables for booking, flight_bookings, and passenger
 						System.out.println(admin.addBooking(booking));
 						System.out.println(admin.addFlightBookings(flightBooking));
 						System.out.println(admin.addPassenger(addPassenger));
+						System.out.println(admin.updateFlight(flights.get(selection - 1)));
 						
 						continue;
 						
 					// update
 					case 2:
+						
+						// update a passenger, get all details of passenger and ask them to book a flight
+						// update booking, flight_bookings to correspond with flight
+						
+						System.out.println("Choose which passenger to update:");
+						int countU = 0;
+						List<Passenger> passengersU = admin.readPassengers();
+						for (Passenger p : passengersU) {
+							System.out.println(
+									++countU + ") " +
+									"Passenger id: " + p.getId() +
+									", Booking id: " + p.getBooking_id() +
+									", Given Name: " + p.getGiven_name() +
+									", Family Name: " + p.getFamily_name() +
+									", DOB: " + p.getDob() +
+									", Gender: " + p.getGender() +
+									", Address: " + p.getAddress() 
+									);
+						}
+						System.out.println(++countU + ") Quit");
+						
+						int selectionU = sc.nextInt();
+						if (selectionU == countU) {
+							continue;
+						}
+						else if (selectionU < 1 || selectionU > countU) {
+							System.out.println("Invalid number chosen, try again");
+							continue;
+						}
+						
+						Passenger updatePassenger = passengersU.get(selectionU - 1);
+						
+						System.out.println("Enter New Given Name of Passenger or N/A for no change:");
+						sc.nextLine();
+						String givenName = sc.nextLine();
+						if (!"N/A".equals(givenName)) {
+							updatePassenger.setGiven_name(givenName);
+						}
+						
+						System.out.println("Enter New Family Name of Passenger or N/A for no change:");
+						String familyName = sc.nextLine();
+						if (!"N/A".equals(familyName)) {
+							updatePassenger.setFamily_name(familyName);
+						}
+
+						System.out.println("Enter New Date of Birth for Passenger in format yyyy-mm-dd or N/A for no change:");
+						String dob = sc.nextLine();
+						if (!"N/A".equals(dob)) {
+							updatePassenger.setDob(Date.valueOf(dob));
+						}
+
+						System.out.println("Enter New Gender of Passenger or N/A for no change:");
+						String gender = sc.nextLine();
+						if (!"N/A".equals(gender)) {
+							updatePassenger.setGender(gender);
+						}
+
+						System.out.println("Enter New Address of Passenger or N/A for no change:");
+						String address = sc.nextLine();
+						if (!"N/A".equals(address)) {
+							updatePassenger.setAddress(address);
+						}
+
+						System.out.println("Choose a new flight to book this passenger on or select no change:");
+						
+						List<Flight> flightsU = admin.readFlights();
+						
+						int countUF = 0;
+						for (Flight f : flightsU) {
+							System.out.println(
+									++countUF + ") " +
+									"Flight id: " + f.getId() +
+									", Route id: " + f.getRoute_id() +
+									", Airplane id: " + f.getAirplane_id() +
+									", Departure time: " + f.getDeparture_time() +
+									", Reserved seats: " + f.getReserved_seats() +
+									", Seat price: $" + f.getSeat_price()
+									);
+						}
+						System.out.println(++countUF + ") No change");
+						
+						Boolean change = true;
+						
+						int selectionUF = sc.nextInt();
+						if (selectionUF == countUF) {
+							change = false;
+						}
+						else if (selectionUF < 1 || selectionUF > countUF) {
+							System.out.println("Invalid number chosen, try again");
+							continue;
+						}
+						
+						if (change) {
+
+							// create new booking, use that pk to add to flight_bookings and passenger
+							
+							// create new booking
+							Booking bookingU = new Booking();
+							bookingU.setIs_active(1);
+							bookingU.setConfirmation_code("Confirmed");
+							
+							Integer pkU = admin.addBookingReturnPK(bookingU);
+							
+							// create new flight_bookings with booking id and flight id
+							FlightBookings flightBookingU = new FlightBookings();
+							flightBookingU.setFlight_id(flightsU.get(selectionUF - 1).getId());
+							flightBookingU.setBooking_id(pkU);
+							
+							// set the pk from booking as the passenger.booking_id
+							updatePassenger.setBooking_id(pkU);
+							
+							// add entries to tables for booking, flight_bookings, and passenger
+							System.out.println(admin.addBooking(bookingU));
+							System.out.println(admin.addFlightBookings(flightBookingU));
+						}
+
+						System.out.println(admin.updatePassenger(updatePassenger));
+						
 						continue;
 						
 					// read
 					case 3:
 
-						List<Passenger> passengerR = admin.readPassengers();
-						for (Passenger p : passengerR) {
+						List<Passenger> passengersR = admin.readPassengers();
+						for (Passenger p : passengersR) {
 							System.out.println(
 									"Passenger id: " + p.getId() +
 									", Booking id: " + p.getBooking_id() +
@@ -732,6 +855,15 @@ public class AdministratorMenu {
 						}
 						
 						// for deleted passenger, go into flight and remove their seat from reserved_seats
+						Integer booking_id = admin.readBookingsById(passengersD.get(selectionD - 1).getBooking_id()).get(0).getId();
+						
+						Integer flight_id = admin.readFlightBookingsByBookingId(booking_id).get(0).getFlight_id();
+						
+						Flight flight = admin.readFlightsById(flight_id).get(0);
+						
+						Integer seatsD = flight.getReserved_seats();
+						seatsD--;
+						flight.setReserved_seats(seatsD);
 
 						// delete chosen passenger
 						System.out.println(admin.deletePassenger(passengersD.get(selectionD - 1)));

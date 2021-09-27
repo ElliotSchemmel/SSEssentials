@@ -1443,7 +1443,7 @@ public class AdministratorMenu {
 				for (Flight f : bookedFlights) {
 					System.out.println(
 							++count + ") " +
-							"Booking Id: " + inactiveBookings.get(count - 1).getId() +
+							"Booking Id: " + inactiveBookings.get(count - 1).getId() + " " +
 							admin.readAirportsById(admin.readRoutesById(f.getRoute_id()).get(0).getOrigin_id()).get(0).getIata_id()
 							+ ", " +
 							admin.readAirportsById(admin.readRoutesById(f.getRoute_id()).get(0).getOrigin_id()).get(0).getCity()

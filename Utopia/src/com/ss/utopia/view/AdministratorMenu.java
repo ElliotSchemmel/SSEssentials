@@ -996,15 +996,20 @@ public class AdministratorMenu {
 						
 						List<Flight> flights = admin.readFlights();
 						
+						Boolean airportInUse = false;
+						
 						for (Flight f : flights) {
 							if(admin.readRoutesById(f.getRoute_id()).get(0).getOrigin_id().equals(deleteAirport.getIata_id())
 								|| admin.readRoutesById(f.getRoute_id()).get(0).getDestination_id().equals(deleteAirport.getIata_id())) {
 								System.out.println("Airport is currently being used on a route of a current flight and can not be deleted");
-								continue;
+								airportInUse = true;
+								break;
 							}
 						}
 						
-						System.out.println(admin.deleteAirport(deleteAirport));
+						if (!airportInUse) {
+							System.out.println(admin.deleteAirport(deleteAirport));
+						}
 						
 						continue;
 						
